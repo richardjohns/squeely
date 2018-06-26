@@ -1,0 +1,106 @@
+History
+
+IBM started out SQL as SEQUEL (Structured English QUEry Language) in the 70's to query databases.
+
+Main T1 financial select is – 
+
+SELECT * FROM glf_ldg_acct 
+where ldg_name = 'GL1A0018'
+
+SELECT * FROM glf_bat_doc
+where doc_datei1 between '2018-05-01 00:00:00' and '2018-06-01 00:00:00'
+
+Access DB schema maps from –
+
+\\techone\techone\Suites\CES\Prod\software\distribution\system\rts\schema\html
+
+Select row
+
+SELECT name AS 'Movies', genre, year
+FROM movies;
+// will apply alias of Movies to name – doesn’t overwrite underlying table.
+
+SELECT DISTINCT tools 
+FROM inventory;
+// will select tools column but will filter out all duplicate values.
+
+SELECT *
+FROM movies
+WHERE imdb_rating > 8;
+// will select all columns and filter all rows where rating > 8
+WHERE name LIKE 'Se_en';
+// will select all fitting word but with wildcard ‘_’ in the middle.
+WHERE name LIKE 'A%';
+// will select all starting with ‘A’. Note LIKE is not case-sensitive.
+WHERE name LIKE '%A%'; 
+// will select all containing ‘A’
+WHERE imdb_rating IS NOT NULL;
+// will select where a movie has an imdb rating. 
+WHERE name BETWEEN 'A' AND 'J';
+//
+WHERE year BETWEEN 1990 AND 1999
+   AND genre = 'romance'
+   OR genre = 'action';
+
+SELECT COUNT(*) 
+SELECT MAX(price) // or SELECT MIN
+SELECT AVG(downloads)
+SELECT SUM(downloads) // where downloads is a column
+SELECT name, ROUND(price, 0)
+SELECT ROUND(AVG(price), 2)
+FROM fake_apps;
+
+Sort
+
+SELECT name, year, imdb_rating
+FROM movies
+ORDER BY imdb_rating DESC;
+// leave off to just get ASC
+LIMIT 3; 
+// gets top 3
+
+Case
+
+SELECT name,
+    CASE
+    WHEN genre = 'romance' THEN 'Chill'
+    WHEN genre = 'comedy' THEN 'Chill'
+    ELSE 'Intense'
+  END AS 'Mood'
+FROM movies;
+// note how the case is essentially a new column called by SELECT
+
+Update row
+
+UPDATE celebs 
+SET age = 22 
+WHERE id = 1; 
+
+SELECT * FROM celebs;
+
+Add column:
+
+ALTER TABLE celebs ADD COLUMN twitter_handle TEXT; 
+
+SELECT * FROM celebs;
+
+Delete select rows:
+
+DELETE FROM celebs WHERE twitter_handle IS NULL; 
+
+SELECT * FROM celebs;
+
+Create table
+
+CREATE TABLE celebs (
+   id INTEGER PRIMARY KEY, 
+   name TEXT UNIQUE,
+   date_of_birth TEXT NOT NULL,
+   date_of_death TEXT DEFAULT 'Not Applicable',
+);
+
+CREATE TABLE awards (
+  id INTEGER PRIMARY KEY,
+  recipient TEXT NOT NULL,
+  award_name TEXT DEFAULT "Grammy"
+);
