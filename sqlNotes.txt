@@ -50,6 +50,36 @@ SELECT name, ROUND(price, 0)
 SELECT ROUND(AVG(price), 2)
 FROM fake_apps;
 
+SELECT price, COUNT(*) 
+FROM fake_apps
+WHERE downloads > 20000
+GROUP BY price;
+
+SELECT category, SUM(downloads) 
+FROM fake_apps
+GROUP BY category;
+
+SELECT category, 
+   price,
+   AVG(downloads)
+FROM fake_apps
+GROUP BY 1, 2; // where 1 & 2 are shorthand for column 1 (category) and column 2 (price)
+
+SELECT year,
+   genre,
+   COUNT(name)
+FROM movies
+GROUP BY 1, 2
+HAVING COUNT(name) > 10;
+•	When we want to limit the results of a query based on values of the individual rows, use WHERE.
+•	When we want to limit the results of a query based on an aggregate property, use HAVING.
+SELECT price, 
+   ROUND(AVG(downloads)),
+   COUNT(*)
+FROM fake_apps
+GROUP BY price
+HAVING COUNT(*) > 10;
+
 Sort
 
 SELECT name, year, imdb_rating
@@ -104,3 +134,4 @@ CREATE TABLE awards (
   recipient TEXT NOT NULL,
   award_name TEXT DEFAULT "Grammy"
 );
+
