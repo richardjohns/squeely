@@ -135,3 +135,8 @@ CREATE TABLE awards (
   award_name TEXT DEFAULT "Grammy"
 );
 
+select * 
+FROM orders
+JOIN subscriptions
+	ON orders.subscription_id = subscriptions.subscription_id
+WHERE description = 'Fashion Magazine';
