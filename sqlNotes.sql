@@ -1,6 +1,6 @@
-History
+-- * History *
 
-IBM started out SQL as SEQUEL (Structured English QUEry Language) in the 70's to query databases.
+-- IBM started out SQL as SEQUEL (Structured English QUEry Language) in the 70's to query databases.
 
 SELECT DISTINCT * FROM PUF_ORD_CTL
 INNER JOIN INF_SUPPLIER
@@ -23,9 +23,7 @@ JOIN glf_chart_acct c
   AND c.chart_name = 'APSHL'
   AND c.stat_ind <> 'I'
 WHERE ldg_name = 'AP'
-
 EXCEPT
-
 SELECT DISTINCT
   t.accnbri,
   c.stat_ind
@@ -37,7 +35,7 @@ JOIN glf_chart_acct c
 WHERE ldg_name = 'AP'
 AND t.pdatei > '31-Dec-2016';
 
-Main T1 financial select is – 
+-- Main T1 financial select is – 
 
 SELECT * FROM glf_ldg_acct 
 where ldg_name = 'GL1A0018'
@@ -45,42 +43,42 @@ where ldg_name = 'GL1A0018'
 SELECT * FROM glf_bat_doc
 where doc_datei1 between '2018-05-01 00:00:00' and '2018-06-01 00:00:00'
 
-Access DB schema maps from –
+-- Access DB schema maps from –
 
-\\techone\techone\Suites\CES\Prod\software\distribution\system\rts\schema\html
+-- \\techone\techone\Suites\CES\Prod\software\distribution\system\rts\schema\html
 
-Select row
+-- Select row
 
 SELECT name AS 'Movies', genre, year
 FROM movies;
-// will apply alias of Movies to name – doesn’t overwrite underlying table.
+-- will apply alias of Movies to name – doesn’t overwrite underlying table.
 
 SELECT DISTINCT tools 
 FROM inventory;
-// will select tools column but will filter out all duplicate values.
+-- will select tools column but will filter out all duplicate values.
 
 SELECT *
 FROM movies
 WHERE imdb_rating > 8;
-// will select all columns and filter all rows where rating > 8
+-- will select all columns and filter all rows where rating > 8
 WHERE name LIKE 'Se_en';
-// will select all fitting word but with wildcard ‘_’ in the middle.
+-- will select all fitting word but with wildcard ‘_’ in the middle.
 WHERE name LIKE 'A%';
-// will select all starting with ‘A’. Note LIKE is not case-sensitive.
+-- will select all starting with ‘A’. Note LIKE is not case-sensitive.
 WHERE name LIKE '%A%'; 
-// will select all containing ‘A’
+-- will select all containing ‘A’
 WHERE imdb_rating IS NOT NULL;
-// will select where a movie has an imdb rating. 
+-- will select where a movie has an imdb rating. 
 WHERE name BETWEEN 'A' AND 'J';
-//
+
 WHERE year BETWEEN 1990 AND 1999
    AND genre = 'romance'
    OR genre = 'action';
 
 SELECT COUNT(*) 
-SELECT MAX(price) // or SELECT MIN
+SELECT MAX(price) -- or SELECT MIN
 SELECT AVG(downloads)
-SELECT SUM(downloads) // where downloads is a column
+SELECT SUM(downloads) -- where downloads is a column
 SELECT name, ROUND(price, 0)
 SELECT ROUND(AVG(price), 2)
 FROM fake_apps;
@@ -98,7 +96,7 @@ SELECT category,
    price,
    AVG(downloads)
 FROM fake_apps
-GROUP BY 1, 2; // where 1 & 2 are shorthand for column 1 (category) and column 2 (price)
+GROUP BY 1, 2; -- where 1 & 2 are shorthand for column 1 (category) and column 2 (price)
 
 SELECT year,
    genre,
@@ -115,16 +113,16 @@ FROM fake_apps
 GROUP BY price
 HAVING COUNT(*) > 10;
 
-Sort
+-- Sort
 
 SELECT name, year, imdb_rating
 FROM movies
 ORDER BY imdb_rating DESC;
-// leave off to just get ASC
+-- leave off to just get ASC
 LIMIT 3; 
-// gets top 3
+-- gets top 3
 
-Case
+-- Case
 
 SELECT name,
     CASE
@@ -133,9 +131,9 @@ SELECT name,
     ELSE 'Intense'
   END AS 'Mood'
 FROM movies;
-// note how the case is essentially a new column called by SELECT
+-- note how the case is essentially a new column called by SELECT
 
-Update row
+-- Update row
 
 UPDATE celebs 
 SET age = 22 
@@ -143,19 +141,15 @@ WHERE id = 1;
 
 SELECT * FROM celebs;
 
-Add column:
+-- Add column:
 
 ALTER TABLE celebs ADD COLUMN twitter_handle TEXT; 
-
 SELECT * FROM celebs;
-
 Delete select rows:
-
 DELETE FROM celebs WHERE twitter_handle IS NULL; 
-
 SELECT * FROM celebs;
 
-Create table
+-- Create table
 
 CREATE TABLE celebs (
    id INTEGER PRIMARY KEY, 
@@ -170,14 +164,12 @@ CREATE TABLE awards (
   award_name TEXT DEFAULT "Grammy"
 );
 
-select * 
-FROM orders
+select * FROM orders
 JOIN subscriptions
 	ON orders.subscription_id = subscriptions.subscription_id
 WHERE description = 'Fashion Magazine';
 
-SELECT COUNT(*)
-FROM newspaper
+SELECT COUNT(*) FROM newspaper
 JOIN online
 	ON newspaper.id = online.id;
 
