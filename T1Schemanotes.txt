@@ -1,0 +1,34 @@
+-- docfind AU
+SELECT * FROM glf_ldg_acc_trans 
+WHERE ldg_name = 'gla18AU'
+AND doc_ref1 = '2408573275'
+
+-- FXrate calc
+SELECT * 
+FROM GLF_LDG_ACC_TRANS
+LEFT OUTER JOIN GLF_LDG_ACCT_DESC1 AS D1
+  ON GLF_LDG_ACC_TRANS.ldg_name = D1.ldg_name
+  AND GLF_LDG_ACC_TRANS.accnbri = D1.accnbri
+WHERE GLF_LDG_ACC_TRANS.ldg_name = 'gla18au'
+AND GLF_LDG_ACC_TRANS.amt2 <>
+ROUND(GLF_LDG_ACC_TRANS.amt1 /
+                              CASE
+                                WHEN GLF_LDG_ACC_TRANS.user_fld9 <> 'Yes' THEN (SELECT TOP 1
+                                    EXCH_RATE_AMT
+                                  FROM F1CCY_EXCH_RATE
+                                  WHERE GLF_LDG_ACC_TRANS.doc_datei1 >= START_DATEI
+                                  AND MAJOR_CCY_CODE = 'NZD'
+                                  AND TRANS_CCY_CODE = 'AUD'
+                                  ORDER BY START_DATEI DESC)
+                                ELSE GLF_LDG_ACC_TRANS.user_fld10
+                              END
+, 2)
+AND doc_ref1 = '2408573275'
+
+-- All tables
+SELECT * FROM SYSOBJECTS
+WHERE xtype = 'U'
+AND name LIKE '%token%';
+
+-- Webtokens
+
