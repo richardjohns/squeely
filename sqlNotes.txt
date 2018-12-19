@@ -1,7 +1,11 @@
-History
+-- T1 notes
 
-IBM started out SQL as SEQUEL (Structured English QUEry Language) in the 70's to query databases.
+-- Join main transaction table to related tax table
+select * from glf_ldg_acc_trans t
+join glf_ldg_acc_transd d on t.ldg_name = d.ldg_name and t.accnbri = d.accnbri and t.trans_nbr = d.trans_nbr 
+WHERE t.ldg_name = 'DP1A0018';
 
+-- All POs created after certain date
 SELECT DISTINCT * FROM PUF_ORD_CTL
 INNER JOIN INF_SUPPLIER
   ON PUF_ORD_CTL.supp_accnbri = INF_SUPPLIER.accnbri
@@ -37,19 +41,22 @@ JOIN glf_chart_acct c
 WHERE ldg_name = 'AP'
 AND t.pdatei > '31-Dec-2016';
 
-Main T1 financial select is – 
-
+-- Main T1 financial select  
 SELECT * FROM glf_ldg_acct 
 where ldg_name = 'GL1A0018'
 
+-- Docfile select
 SELECT * FROM glf_bat_doc
 where doc_datei1 between '2018-05-01 00:00:00' and '2018-06-01 00:00:00'
 
-Access DB schema maps from –
+-- Access DB schema maps from –
+-- \\techone\techone\Suites\CES\Prod\software\distribution\system\rts\schema\html
 
-\\techone\techone\Suites\CES\Prod\software\distribution\system\rts\schema\html
+-- History
 
-Select row
+-- IBM started out SQL as SEQUEL (Structured English QUEry Language) in the 70's to query databases.
+
+-- Select row
 
 SELECT name AS 'Movies', genre, year
 FROM movies;
@@ -115,7 +122,7 @@ FROM fake_apps
 GROUP BY price
 HAVING COUNT(*) > 10;
 
-Sort
+-- Sort
 
 SELECT name, year, imdb_rating
 FROM movies
@@ -124,7 +131,7 @@ ORDER BY imdb_rating DESC;
 LIMIT 3; 
 // gets top 3
 
-Case
+-- Case
 
 SELECT name,
     CASE
