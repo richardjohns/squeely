@@ -1,0 +1,133 @@
+//Purpose: Update old user to new user in Tasks, Projects and PO's
+// Run Query
+
+Processing.UserVarPrompt @OLD_USER, "Old User USERID - UPPERCASE 14 Char Max",
+ 
+Processing.UserVarPrompt @NEW_USER, "New User USERID - UPPERCASE 14 Char Max",
+
+Processing.UserVarPrompt @LOC, "Location - 3 Letters",
+
+//Updates project manager on projects
+ExecSQL.Begin
+
+UPDATE F1WRK_PROJ_CTL
+left outer join F1WRK_PROJ_CTL_SC ON F1WRK_PROJ_CTL.PROJ_CODE = F1WRK_PROJ_CTL_SC.PROJ_CODE and F1WRK_PROJ_CTL.WORK_SYS_NAME = F1WRK_PROJ_CTL_SC.WORK_SYS_NAME
+SET PROJ_MGR_USER_ID = @NEW_USER
+WHERE PROJ_MGR_USER_ID = @OLD_USER
+AND SELN_CODE1 = @LOC
+AND PROJ_STAGE IN ('A','D')
+
+
+ExecSQL.End
+ExecSQL.Commit
+
+
+
+ExecSQL.Begin
+
+UPDATE F1WRK_TASK_CTL
+SET RESPON_PER_USER_ID = @NEW_USER
+WHERE RESPON_PER_USER_ID = @OLD_USER
+AND TASK_STAGE IN ('A','D')
+AND SUBSTRING(TASK_NBRI,2,3) = @LOC
+
+ExecSQL.End
+ExecSQL.Commit
+
+
+
+ExecSQL.Begin
+
+
+ExecSQL.End
+ExecSQL.Commit
+
+
+
+ExecSQL.Begin
+
+UPDATE PUF_ORD_CTL
+SET user_fld10 = @NEW_USER
+WHERE user_fld10 = @OLD_USER
+AND pord_status = 'A'
+AND SLOCN_CODE = @LOC
+
+ExecSQL.End
+ExecSQL.Commit
+
+
+ExecSQL.Begin
+
+UPDATE PUF_REQ_CTL
+SET user_fld4 = @NEW_USER
+WHERE user_fld4 = @OLD_USER
+AND prqn_status in ('S','A')
+AND SLOCN_CODE = @LOC
+
+ExecSQL.End
+ExecSQL.Commit
+
+
+
+ExecSQL.Begin
+
+UPDATE PUF_REQ_CTL
+SET user_fld10 = @NEW_USER
+WHERE user_fld10 = @OLD_USER
+AND prqn_status in ('S','A')
+AND SLOCN_CODE = @LOC
+
+ExecSQL.End
+ExecSQL.Commit
+
+
+ExecSQL.Begin
+
+
+update glf_bat_lne
+set user_fld4 = @NEW_USER
+where (select glf_bat_ctl.bat_stat from glf_bat_ctl where glf_bat_ctl.bat_name = glf_bat_lne.bat_name) =  'S'
+and user_fld4 = @OLD_USER
+
+ExecSQL.End
+ExecSQL.Commit
+
+
+
+ExecSQL.Begin
+
+update glf_bat_lne
+set user_fld10 = @NEW_USER
+where (select glf_bat_ctl.bat_stat from glf_bat_ctl where glf_bat_ctl.bat_name = glf_bat_lne.bat_name) =  'S'
+and user_fld10 = @OLD_USER
+
+ExecSQL.End
+ExecSQL.Commit
+
+
+
+
+
+
+
+
+Dim NEW_USER_CONCAT As String //Local Variable
+Dim OLD_USER_CONCAT As String //Local Variable
+Dim PAD As String //Local Variable
+
+@PAD = "########"
+
+@NEW_USER_CONCAT = @NEW_USER + @PAD
+@OLD_USER_CONCAT = @OLD_USER + @PAD
+
+ExecSQL.Begin
+
+
+
+update GLF_SEC_ITEM_DET
+set access_item = left(@NEW_USER_CONCAT,15)
+WHERE item_type = 'CHART' AND item = 'USERS'
+and access_item = left( @OLD_USER_CONCAT,15)
+
+ExecSQL.End
+ExecSQL.Commit
