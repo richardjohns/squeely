@@ -1,9 +1,10 @@
 select 
+	LEFT(p.PROJ_DESCR,3) AS 'Site',
 	t.PROJ_CODE AS 'Project number',
 	p.PROJ_DESCR AS 'Project',
 	t.TASK_NBRI AS 'Task number',
 	c.TASK_DESCR AS 'Task',
-	r.supp_name AS 'Supplier name',
+	ISNULL(r.supp_name,'') AS 'Supplier name',
 	c.TASK_NARR AS 'Task narration',
 	t.EST_AMT1 AS 'Estimate',
 	t.REST_AMT1 AS 'Revised estimate',
@@ -11,11 +12,9 @@ select
 	c.CRDATEI AS 'Create date',
 	c.FINAL_COMPL_DATEI AS 'Final Complete Date',
 	a.ACTY_DESCR AS 'Activity',
-	w.ASSNBRI AS 'Asset number',
-	w.ASSET_LONG_DESCR AS 'Asset',
-	-- l.SUP_CODE,
-	-- l.SUP_PROD_NBR,
-	g.descr
+	ISNULL(w.ASSNBRI,'') AS 'Asset number',
+	ISNULL(w.ASSET_LONG_DESCR,'') AS 'Asset',
+	ISNULL (g.descr,'') AS 'Catalogue'
 from F1WRK_TASK_BAL_VW t
 LEFT JOIN F1WRK_TASK_EST e ON t.TASK_NBRI = e.TASK_NBRI
 LEFT JOIN F1WRK_PROJ_CTL p ON t.PROJ_CODE = p.PROJ_CODE
@@ -29,3 +28,4 @@ WHERE
 	t.WORK_SYS_NAME = 'REFURB'
 	AND
 	t.PROJ_CODE like 'REF%'
+	-- AND r.supp_name IS NOT NULL
