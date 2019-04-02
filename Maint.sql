@@ -34,6 +34,7 @@ select
 	c.CRUSER AS 'Create user',
 	c.TASK_APPR_USER AS 'Task approver',
 	c.TASK_APPR_DATEI AS 'Task approved date',
+	c.TEMPLATE_IND AS 'Task is a template',
 	a.ACTY_DESCR AS 'Activity',
 	ISNULL (g.descr,'') AS 'Catalogue'
 from F1WRK_TASK_BAL_VW t
